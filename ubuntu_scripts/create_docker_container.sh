@@ -97,7 +97,7 @@ PORTS="$PORT_MAPPINGS"
 DOCKER_COMMAND="docker run -it --gpus all --privileged -d -u 0 \
     -v /data1/hanhu2/python/interesting/:/code \
     -v /data1/hanhu2/data/:/data \
-    -v /etc/ssh:/host_ssh \
+    -v ~/.ssh:/host_ssh \
     --name \"$CONTAINER_NAME\" \
     --shm-size 32G \
     $PORTS \
