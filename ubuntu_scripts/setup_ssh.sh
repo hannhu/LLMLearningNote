@@ -57,38 +57,9 @@ read_password() {
 }
 
 # Check if running in non-interactive mode or if DEFAULT_ROOT_PASSWORD is set
-if [ -n "$DEFAULT_ROOT_PASSWORD" ]; then
-    echo "Using provided default password..."
-    ROOT_PASSWORD="$DEFAULT_ROOT_PASSWORD"
-elif [ ! -t 0 ] || [ -n "$DEBIAN_FRONTEND" ]; then
-    echo "Non-interactive mode detected. Using default password '123'"
-    echo "You can change this by setting DEFAULT_ROOT_PASSWORD environment variable"
-    ROOT_PASSWORD="123"
-else
-    # Prompt for root password with retry logic
-    echo "Starting password setup..."
-    ROOT_PASSWORD=""
-    ROOT_PASSWORD_CONFIRM=""
+echo "Use the default password 123"
+ROOT_PASSWORD="123"
 
-    for i in {1..3}; do
-        ROOT_PASSWORD=$(read_password "Enter new root password: ")
-        ROOT_PASSWORD_CONFIRM=$(read_password "Confirm root password: ")
-        
-        if [ "$ROOT_PASSWORD" = "$ROOT_PASSWORD_CONFIRM" ] && [ -n "$ROOT_PASSWORD" ]; then
-            break
-        else
-            if [ -z "$ROOT_PASSWORD" ]; then
-                echo "Password cannot be empty! Try again."
-            else
-                echo "Passwords do not match! Try again."
-            fi
-            if [ $i -eq 3 ]; then
-                echo "Failed after 3 attempts"
-                exit 1
-            fi
-        fi
-    done
-fi
 
 # Check if password is still empty
 if [ -z "$ROOT_PASSWORD" ]; then
